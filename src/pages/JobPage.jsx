@@ -5,6 +5,7 @@ import { FaArrowLeft, FaMapMarker  } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector } from 'react-redux';
 
 const JobPage = ({ deleteJob }) => {
 
@@ -12,6 +13,8 @@ const JobPage = ({ deleteJob }) => {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const jobList = useSelector(state => state.jobList);
+  console.log(jobList);
 
   const handleDeleteJob = async ()=> {
     await deleteJob(id);

@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import JobListing from './JobListing';
 import Spinner from './Spinner';
+import { setJobList } from '../redux/jobsSlice';
+import { useDispatch } from 'react-redux';
 
 
 const JobListings = ({ isHome }) => {
+
+  const dispatch = useDispatch();
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(()=> {
     const fetchJobs = async() => {
-      const apiUrl = isHome ? 'http://localhost:8000/jobs?_limit=3' : 'http://localhost:8000/jobs';
+      const apiUrl = 'http://localhost:8000/jobs';
+
       try{
         const res = await fetch(apiUrl);
-        const data = await res.json();
+        let data = await res.json();
+        dispatch(setJobList(data));
+
+        if(isHome) data = data.slice(0, 3);
         setJobs(data);
       }catch(err){
         console.log('Error fetching data', err);
